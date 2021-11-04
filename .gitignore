@@ -2,6 +2,8 @@
 
 # .env file
 .env
+.env.developement
+.env.production
 
 # dependencies
 /node_modules
