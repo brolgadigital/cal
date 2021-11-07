@@ -43,7 +43,7 @@ describe("pro user", () => {
       },
     });
 
-    await page.goto("http://localhost:3000/event-types");
+    await page.goto("http://localhost:7000/event-types");
 
     await expect(page).toHaveSelector(`text='${eventTitle}'`);
   });

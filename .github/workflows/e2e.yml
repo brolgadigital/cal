@@ -7,7 +7,7 @@ jobs:
 
     env:
       DATABASE_URL: postgresql://postgres:@localhost:5432/calendso
-      BASE_URL: http://localhost:3000
+      BASE_URL: http://localhost:7000
       JWT_SECRET: secret
       # GOOGLE_API_CREDENTIALS: ${{ secrets.CI_GOOGLE_API_CREDENTIALS }}
       # CRON_API_KEY: xxx
@@ -57,7 +57,7 @@ jobs:
       - run: yarn db-seed
       - run: yarn build
       - run: yarn start &
-      - run: npx wait-port 3000 --timeout 10000
+      - run: npx wait-port 7000 --timeout 10000
 
       - name: Cache playwright binaries
         uses: actions/cache@v2
