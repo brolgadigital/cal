@@ -184,7 +184,7 @@ const BookingPage = (props: BookingPageProps) => {
   const bookingHandler = useCallback(_bookingHandler, [guestEmails]);
 
   return (
-    <div>
+    <div className="bd-main">
       <Head>
         <title>
           {rescheduleUid
@@ -203,7 +203,7 @@ const BookingPage = (props: BookingPageProps) => {
 
       <main className="max-w-3xl mx-auto my-0 sm:my-24">
         {isReady && (
-          <div className="overflow-hidden bg-white border border-gray-200 dark:bg-neutral-900 dark:border-0 sm:rounded-sm">
+          <div className="overflow-hidden sm:rounded-sm bd-display ">
             <div className="px-4 py-5 sm:flex sm:p-4">
               <div className="sm:w-1/2 sm:border-r sm:dark:border-black">
                 <AvatarGroup
@@ -217,18 +217,16 @@ const BookingPage = (props: BookingPageProps) => {
                       }))
                   )}
                 />
-                <h2 className="font-medium text-gray-500 font-cal dark:text-gray-300">
-                  {props.profile.name}
-                </h2>
-                <h1 className="mb-4 text-3xl font-semibold text-gray-800 dark:text-white">
+                <h2 className="bd-blue">{props.profile.name}</h2>
+                <h1 className="mb-4 text-3xl font-semibold text-gray-800 dark:text-white heading">
                   {props.eventType.title}
                 </h1>
-                <p className="mb-2 text-gray-500">
+                <p className="mb-2">
                   <ClockIcon className="inline-block w-4 h-4 mr-1 -mt-1" />
                   {props.eventType.length} {t("minutes")}
                 </p>
                 {props.eventType.price > 0 && (
-                  <p className="px-2 py-1 mb-1 -ml-2 text-gray-500">
+                  <p className="px-2 py-1 mb-1 -ml-2">
                     <CreditCardIcon className="inline-block w-4 h-4 mr-1 -mt-1" />
                     <IntlProvider locale="en">
                       <FormattedNumber
@@ -240,7 +238,7 @@ const BookingPage = (props: BookingPageProps) => {
                   </p>
                 )}
                 {selectedLocation === LocationType.InPerson && (
-                  <p className="mb-2 text-gray-500">
+                  <p className="mb-2">
                     <LocationMarkerIcon className="inline-block w-4 h-4 mr-1 -mt-1" />
                     {locationInfo(selectedLocation).address}
                   </p>
@@ -249,12 +247,12 @@ const BookingPage = (props: BookingPageProps) => {
                   <CalendarIcon className="inline-block w-4 h-4 mr-1 -mt-1" />
                   {parseZone(date).format(timeFormat + ", dddd DD MMMM YYYY")}
                 </p>
-                <p className="mb-8 text-gray-600 dark:text-white">{props.eventType.description}</p>
+                <p className="mb-8 dark:text-white">{props.eventType.description}</p>
               </div>
               <div className="sm:w-1/2 sm:pl-8 sm:pr-4">
                 <form onSubmit={bookingHandler}>
                   <div className="mb-4">
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-white">
+                    <label htmlFor="name" className="block text-sm font-medium dark:text-white">
                       {t("your_name")}
                     </label>
                     <div className="mt-1">
@@ -270,9 +268,7 @@ const BookingPage = (props: BookingPageProps) => {
                     </div>
                   </div>
                   <div className="mb-4">
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700 dark:text-white">
+                    <label htmlFor="email" className="block text-sm font-medium dark:text-white">
                       {t("email_address")}
                     </label>
                     <div className="mt-1">
@@ -290,9 +286,7 @@ const BookingPage = (props: BookingPageProps) => {
                   </div>
                   {locations.length > 1 && (
                     <div className="mb-4">
-                      <span className="block text-sm font-medium text-gray-700 dark:text-white">
-                        {t("location")}
-                      </span>
+                      <span className="block text-sm font-medium dark:text-white">{t("location")}</span>
                       {locations.map((location) => (
                         <label key={location.type} className="block">
                           <input

@@ -95,14 +95,14 @@ const AvailabilityPage = ({ profile, eventType, workingHours }: Props) => {
         name={profile.name}
         avatar={profile.image}
       />
-      <div>
+      <div className="bd-main">
         <main
           className={
-            "mx-auto my-0 md:my-24 transition-max-width ease-in-out duration-500 " +
+            "mx-auto my-0 transition-max-width ease-in-out duration-500 " +
             (selectedDate ? "max-w-5xl" : "max-w-3xl")
           }>
           {isReady && (
-            <div className="bg-white border-gray-200 rounded-sm sm:dark:border-gray-600 dark:bg-gray-900 md:border">
+            <div className="bd-display">
               {/* mobile: details */}
               <div className="block p-4 sm:p-8 md:hidden">
                 <div className="flex items-center">
@@ -119,8 +119,8 @@ const AvailabilityPage = ({ profile, eventType, workingHours }: Props) => {
                     truncateAfter={5}
                   />
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-black dark:text-gray-300">{profile.name}</p>
-                    <div className="flex gap-2 text-xs font-medium text-gray-600">
+                    <p className="bd-blue">{profile.name}</p>
+                    <div className="flex gap-2 text-xs font-medium">
                       {eventType.title}
                       <div>
                         <ClockIcon className="inline-block w-4 h-4 mr-1 -mt-1" />
@@ -141,7 +141,7 @@ const AvailabilityPage = ({ profile, eventType, workingHours }: Props) => {
                     </div>
                   </div>
                 </div>
-                <p className="mt-3 text-gray-600 dark:text-gray-200">{eventType.description}</p>
+                <p className="mt-3">{eventType.description}</p>
               </div>
 
               <div className="px-4 sm:flex sm:py-5 sm:p-4">
@@ -162,16 +162,14 @@ const AvailabilityPage = ({ profile, eventType, workingHours }: Props) => {
                     size={10}
                     truncateAfter={3}
                   />
-                  <h2 className="font-medium text-gray-500 dark:text-gray-300 mt-3">{profile.name}</h2>
-                  <h1 className="font-cal mb-4 text-3xl font-semibold text-gray-800 dark:text-white">
-                    {eventType.title}
-                  </h1>
-                  <p className="px-2 py-1 mb-1 -ml-2 text-gray-500">
+                  <h2 className="mt-3 bd-blue">{profile.name}</h2>
+                  <h1 className="mb-4 text-3xl font-semibold font-cal heading">{eventType.title}</h1>
+                  <p className="px-2 py-1 mb-1 -ml-2 bd-blue">
                     <ClockIcon className="inline-block w-4 h-4 mr-1 -mt-1" />
                     {eventType.length} {t("minutes")}
                   </p>
                   {eventType.price > 0 && (
-                    <p className="px-2 py-1 mb-1 -ml-2 text-gray-500">
+                    <p className="px-2 py-1 mb-1 -ml-2 bd-blue">
                       <CreditCardIcon className="inline-block w-4 h-4 mr-1 -mt-1" />
                       <IntlProvider locale="en">
                         <FormattedNumber
@@ -185,7 +183,7 @@ const AvailabilityPage = ({ profile, eventType, workingHours }: Props) => {
 
                   <TimezoneDropdown />
 
-                  <p className="mt-3 mb-8 text-gray-600 dark:text-gray-200">{eventType.description}</p>
+                  <p className="mt-3 mb-8">{eventType.description}</p>
                 </div>
                 <DatePicker
                   date={selectedDate}
@@ -229,7 +227,7 @@ const AvailabilityPage = ({ profile, eventType, workingHours }: Props) => {
   function TimezoneDropdown() {
     return (
       <Collapsible.Root open={isTimeOptionsOpen} onOpenChange={setIsTimeOptionsOpen}>
-        <Collapsible.Trigger className="px-2 py-1 mb-1 -ml-2 text-left text-gray-500 min-w-32">
+        <Collapsible.Trigger className="px-2 py-1 mb-1 -ml-2 text-left min-w-32 bd-blue">
           <GlobeIcon className="inline-block w-4 h-4 mr-1 -mt-1" />
           {timeZone()}
           {isTimeOptionsOpen ? (

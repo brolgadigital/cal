@@ -1,0 +1,43 @@
+.bd-main {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: white;
+  color: #202e42;
+  font-family: Barlow Condensed, sans-serif;
+}
+
+.bd-display {
+  background-color: #e2eaed;
+  border-radius: 2px;
+}
+.bd-blue {
+  color: #486181;
+}
+
+.heading {
+  color: #486181 !important;
+  font-family: Barlow Condensed, sans-serif !important;
+  font-weight: bold !important;
+}
+
+.bg-black,
+.hover\:bg-primary-500:hover {
+  background-color: #202e42 !important;
+}
+.hover\:border-black:hover {
+  border-color: #202e42 !important;
+}
+.border-primary-500 {
+  border-radius: 2px;
+  border-color: #202e42 !important;
+}
+.text-gray-500,
+.text-gray-400 {
+  color: #7fa1c4 !important;
+}
+.text-green-500 {
+  color: #bf3c43 !important;
+}
