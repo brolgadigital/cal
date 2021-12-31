@@ -15,6 +15,7 @@ import useTheme from "@lib/hooks/useTheme";
 import { isBrandingHidden } from "@lib/isBrandingHidden";
 import { collectPageParameters, telemetryEventTypes, useTelemetry } from "@lib/telemetry";
 
+import CustomBranding from "@components/CustomBranding";
 import AvailableTimes from "@components/booking/AvailableTimes";
 import DatePicker from "@components/booking/DatePicker";
 import TimeOptions from "@components/booking/TimeOptions";
@@ -92,35 +93,40 @@ const AvailabilityPage = ({ profile, eventType, workingHours }: Props) => {
       <HeadSeo
         title={`${rescheduleUid ? t("reschedule") : ""} ${eventType.title} | ${profile.name}`}
         description={`${rescheduleUid ? t("reschedule") : ""} ${eventType.title}`}
-        name={profile.name}
-        avatar={profile.image}
+        name={profile.name || undefined}
+        avatar={profile.image || undefined}
       />
-      <div className="bd-main">
+      <CustomBranding val={profile.brandColor} />
+      <div>
         <main
           className={
-            "mx-auto my-0 transition-max-width ease-in-out duration-500 " +
+            "mx-auto my-0 md:my-24 transition-max-width ease-in-out duration-500 " +
             (selectedDate ? "max-w-5xl" : "max-w-3xl")
           }>
           {isReady && (
-            <div className="bd-display">
+            <div className="bg-white border-gray-200 rounded-sm sm:dark:border-gray-600 dark:bg-gray-900 md:border">
               {/* mobile: details */}
               <div className="block p-4 sm:p-8 md:hidden">
                 <div className="flex items-center">
                   <AvatarGroup
-                    items={[{ image: profile.image, alt: profile.name }].concat(
-                      eventType.users
-                        .filter((user) => user.name !== profile.name)
-                        .map((user) => ({
-                          title: user.name,
-                          image: user.avatar,
-                        }))
-                    )}
+                    items={
+                      [
+                        { image: profile.image, alt: profile.name, title: profile.name },
+                        ...eventType.users
+                          .filter((user) => user.name !== profile.name)
+                          .map((user) => ({
+                            title: user.name,
+                            image: user.avatar || undefined,
+                            alt: user.name || undefined,
+                          })),
+                      ].filter((item) => !!item.image) as { image: string; alt?: string; title?: string }[]
+                    }
                     size={9}
                     truncateAfter={5}
                   />
                   <div className="ml-3">
-                    <p className="bd-blue">{profile.name}</p>
-                    <div className="flex gap-2 text-xs font-medium">
+                    <p className="text-sm font-medium text-black dark:text-gray-300">{profile.name}</p>
+                    <div className="flex gap-2 text-xs font-medium text-gray-600">
                       {eventType.title}
                       <div>
                         <ClockIcon className="inline-block w-4 h-4 mr-1 -mt-1" />
@@ -141,7 +147,7 @@ const AvailabilityPage = ({ profile, eventType, workingHours }: Props) => {
                     </div>
                   </div>
                 </div>
-                <p className="mt-3">{eventType.description}</p>
+                <p className="mt-3 text-gray-600 dark:text-gray-200">{eventType.description}</p>
               </div>
 
               <div className="px-4 sm:flex sm:py-5 sm:p-4">
@@ -151,25 +157,31 @@ const AvailabilityPage = ({ profile, eventType, workingHours }: Props) => {
                     (selectedDate ? "sm:w-1/3" : "sm:w-1/2")
                   }>
                   <AvatarGroup
-                    items={[{ image: profile.image, alt: profile.name }].concat(
-                      eventType.users
-                        .filter((user) => user.name !== profile.name)
-                        .map((user) => ({
-                          title: user.name,
-                          image: user.avatar,
-                        }))
-                    )}
+                    items={
+                      [
+                        { image: profile.image, alt: profile.name, title: profile.name },
+                        ...eventType.users
+                          .filter((user) => user.name !== profile.name)
+                          .map((user) => ({
+                            title: user.name,
+                            alt: user.name,
+                            image: user.avatar,
+                          })),
+                      ].filter((item) => !!item.image) as { image: string; alt?: string; title?: string }[]
+                    }
                     size={10}
                     truncateAfter={3}
                   />
-                  <h2 className="mt-3 bd-blue">{profile.name}</h2>
-                  <h1 className="mb-4 text-3xl font-semibold font-cal heading">{eventType.title}</h1>
-                  <p className="px-2 py-1 mb-1 -ml-2 bd-blue">
+                  <h2 className="mt-3 font-medium text-gray-500 dark:text-gray-300">{profile.name}</h2>
+                  <h1 className="mb-4 text-3xl font-semibold text-gray-800 font-cal dark:text-white">
+                    {eventType.title}
+                  </h1>
+                  <p className="px-2 py-1 mb-1 -ml-2 text-gray-500">
                     <ClockIcon className="inline-block w-4 h-4 mr-1 -mt-1" />
                     {eventType.length} {t("minutes")}
                   </p>
                   {eventType.price > 0 && (
-                    <p className="px-2 py-1 mb-1 -ml-2 bd-blue">
+                    <p className="px-2 py-1 mb-1 -ml-2 text-gray-500">
                       <CreditCardIcon className="inline-block w-4 h-4 mr-1 -mt-1" />
                       <IntlProvider locale="en">
                         <FormattedNumber
@@ -183,7 +195,7 @@ const AvailabilityPage = ({ profile, eventType, workingHours }: Props) => {
 
                   <TimezoneDropdown />
 
-                  <p className="mt-3 mb-8">{eventType.description}</p>
+                  <p className="mt-3 mb-8 text-gray-600 dark:text-gray-200">{eventType.description}</p>
                 </div>
                 <DatePicker
                   date={selectedDate}
@@ -205,10 +217,10 @@ const AvailabilityPage = ({ profile, eventType, workingHours }: Props) => {
 
                 {selectedDate && (
                   <AvailableTimes
-                    workingHours={workingHours}
                     timeFormat={timeFormat}
                     minimumBookingNotice={eventType.minimumBookingNotice}
                     eventTypeId={eventType.id}
+                    slotInterval={eventType.slotInterval}
                     eventLength={eventType.length}
                     date={selectedDate}
                     users={eventType.users}
@@ -227,7 +239,7 @@ const AvailabilityPage = ({ profile, eventType, workingHours }: Props) => {
   function TimezoneDropdown() {
     return (
       <Collapsible.Root open={isTimeOptionsOpen} onOpenChange={setIsTimeOptionsOpen}>
-        <Collapsible.Trigger className="px-2 py-1 mb-1 -ml-2 text-left min-w-32 bd-blue">
+        <Collapsible.Trigger className="px-2 py-1 mb-1 -ml-2 text-left text-gray-500 min-w-32">
           <GlobeIcon className="inline-block w-4 h-4 mr-1 -mt-1" />
           {timeZone()}
           {isTimeOptionsOpen ? (
