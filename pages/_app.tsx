@@ -15,6 +15,7 @@ import { Maybe } from "@trpc/server";
 
 import "../styles/fonts.css";
 import "../styles/globals.css";
+import "../styles/brolgacustom.css";
 
 function MyApp(props: AppProps) {
   const { Component, pageProps, err } = props;
