@@ -3,11 +3,11 @@ import async from "async";
 import merge from "lodash/merge";
 import { v5 as uuidv5 } from "uuid";
 
-import { AdditionInformation, CalendarEvent, createEvent, updateEvent } from "@lib/calendarClient";
 import { FAKE_DAILY_CREDENTIAL } from "@lib/integrations/Daily/DailyVideoApiAdapter";
+import { createEvent, updateEvent } from "@lib/integrations/calendar/CalendarManager";
+import { AdditionInformation, CalendarEvent } from "@lib/integrations/calendar/interfaces/Calendar";
 import { LocationType } from "@lib/location";
 import prisma from "@lib/prisma";
-import { Ensure } from "@lib/types/utils";
 import { createMeeting, updateMeeting, VideoCallData } from "@lib/videoClient";
 
 export type Event = AdditionInformation & VideoCallData;
@@ -117,7 +117,7 @@ export default class EventManager {
    *
    * @param event
    */
-  public async create(event: Ensure<CalendarEvent, "language">): Promise<CreateUpdateResult> {
+  public async create(event: CalendarEvent): Promise<CreateUpdateResult> {
     const evt = processLocation(event);
     const isDedicated = evt.location ? isDedicatedIntegration(evt.location) : null;
 
@@ -157,10 +157,7 @@ export default class EventManager {
    *
    * @param event
    */
-  public async update(
-    event: Ensure<CalendarEvent, "language">,
-    rescheduleUid: string
-  ): Promise<CreateUpdateResult> {
+  public async update(event: CalendarEvent, rescheduleUid: string): Promise<CreateUpdateResult> {
     const evt = processLocation(event);
 
     if (!rescheduleUid) {
@@ -256,6 +253,10 @@ export default class EventManager {
       return Promise.all(destinationCalendarCredentials.map(async (c) => await createEvent(c, event)));
     }
 
+    /**
+     *  Not ideal but, if we don't find a destination calendar,
+     * fallback to the first connected calendar
+     */
     const [credential] = this.calendarCredentials;
     if (!credential) {
       return [];
@@ -288,7 +289,7 @@ export default class EventManager {
    * @param event
    * @private
    */
-  private createVideoEvent(event: Ensure<CalendarEvent, "language">): Promise<EventResult> {
+  private createVideoEvent(event: CalendarEvent): Promise<EventResult> {
     const credential = this.getVideoCredential(event);
 
     if (credential) {

@@ -7,10 +7,9 @@ import { EventResult } from "@lib/events/EventManager";
 import { PartialReference } from "@lib/events/EventManager";
 import logger from "@lib/logger";
 
-import { CalendarEvent } from "./calendarClient";
 import DailyVideoApiAdapter from "./integrations/Daily/DailyVideoApiAdapter";
 import ZoomVideoApiAdapter from "./integrations/Zoom/ZoomVideoApiAdapter";
-import { Ensure } from "./types/utils";
+import { CalendarEvent } from "./integrations/calendar/interfaces/Calendar";
 
 const log = logger.getChildLogger({ prefix: ["[lib] videoClient"] });
 
@@ -56,10 +55,7 @@ const getBusyVideoTimes = (withCredentials: Credential[]) =>
     results.reduce((acc, availability) => acc.concat(availability), [])
   );
 
-const createMeeting = async (
-  credential: Credential,
-  calEvent: Ensure<CalendarEvent, "language">
-): Promise<EventResult> => {
+const createMeeting = async (credential: Credential, calEvent: CalendarEvent): Promise<EventResult> => {
   const uid: string = getUid(calEvent);
 
   if (!credential) {
