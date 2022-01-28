@@ -4,6 +4,8 @@ import { hashPassword } from "@lib/auth";
 import prisma from "@lib/prisma";
 import slugify from "@lib/slugify";
 
+import { IdentityProvider } from ".prisma/client";
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return;
@@ -29,21 +31,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
+  // There is actually an existingUser if username matches
+  // OR if email matches and both username and password are set
   const existingUser = await prisma.user.findFirst({
     where: {
       OR: [
+        { username },
         {
-          username: username,
-        },
-        {
-          email: userEmail,
-        },
-      ],
-      AND: [
-        {
-          emailVerified: {
-            not: null,
-          },
+          AND: [{ email: userEmail }, { password: { not: null } }, { username: { not: null } }],
         },
       ],
     },
@@ -64,11 +59,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       username,
       password: hashedPassword,
       emailVerified: new Date(Date.now()),
+      identityProvider: IdentityProvider.CAL,
     },
     create: {
       username,
       email: userEmail,
       password: hashedPassword,
+      identityProvider: IdentityProvider.CAL,
     },
   });
 
