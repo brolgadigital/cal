@@ -15,9 +15,9 @@ import type { TRPCClientErrorLike } from "@trpc/react";
 import { Maybe } from "@trpc/server";
 
 import { ContractsProvider } from "../contexts/contractsContext";
+import "../styles/brolgacustom.css";
 import "../styles/fonts.css";
 import "../styles/globals.css";
-import "../styles/brolgacustom.css";
 
 function MyApp(props: AppProps) {
   const { Component, pageProps, err } = props;
