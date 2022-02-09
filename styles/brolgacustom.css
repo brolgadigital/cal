@@ -53,15 +53,15 @@ main .bg-gray-100 {
   background-color: #e2eaed !important;
 }
 
-body {
+.bg-neutral-100 {
   background-color: white !important;
 }
 
-main {
+/* #__next > div {
   display: flex;
   align-content: center;
   justify-content: center;
   align-items: center;
   height: 100vh;
   margin: 0 !important;
-}
+} */
